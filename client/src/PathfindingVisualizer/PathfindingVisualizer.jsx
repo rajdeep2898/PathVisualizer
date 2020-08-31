@@ -13,12 +13,14 @@ export default class PathfindingVisualizer extends Component {
     this.state = {
       grid: [],
       mouseIsPressed: false,
-      START_NODE_ROW: 5,
-      START_NODE_COL: 15,
+      START_NODE_ROW: 10,
+      START_NODE_COL: 5,
       FINISH_NODE_ROW: 10,
-      FINISH_NODE_COL: 35,
+      FINISH_NODE_COL: 25,
       pressedNodeStatus: "normal",
+      title: "Path Finding Algo",
     };
+    // this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
   }
   componentDidMount() {
     const START_NODE_ROW = this.state.START_NODE_ROW;
@@ -32,6 +34,30 @@ export default class PathfindingVisualizer extends Component {
       FINISH_NODE_COL
     );
     this.setState({ grid });
+  }
+  // rerender() {
+  //   const START_NODE_ROW = this.state.START_NODE_ROW;
+  //   const START_NODE_COL = this.state.START_NODE_COL;
+  //   const FINISH_NODE_ROW = this.state.FINISH_NODE_ROW;
+  //   const FINISH_NODE_COL = this.state.FINISH_NODE_COL;
+  //   console.log("true");
+  //   const grid = getInitialGrid(
+  //     START_NODE_ROW,
+  //     START_NODE_COL,
+  //     FINISH_NODE_ROW,
+  //     FINISH_NODE_COL
+  //   );
+  //   console.log(grid);
+  //   this.setState({ grid });
+  //   // this.forceUpdate();
+  //   // this.setState({ mouseIsPressed: true });
+  //   this.setState({ test: "done" });
+  // }
+  // forceUpdateHandler() {
+  //   this.forceUpdate();
+  // }
+  refreshPage() {
+    window.location.reload(false);
   }
 
   handleMouseDown(row, col) {
@@ -108,6 +134,7 @@ export default class PathfindingVisualizer extends Component {
   // }
 
   visualizeDijkstra() {
+    this.setState({ title: "Diakstra Algorithm" });
     const { grid } = this.state;
     const startNode =
       grid[this.state.START_NODE_ROW][this.state.START_NODE_COL];
@@ -118,6 +145,8 @@ export default class PathfindingVisualizer extends Component {
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
   visualizeDFS() {
+    this.setState({ title: "Depth First Search" });
+
     const { grid } = this.state;
     const startNode =
       grid[this.state.START_NODE_ROW][this.state.START_NODE_COL];
@@ -130,6 +159,8 @@ export default class PathfindingVisualizer extends Component {
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
   visualizeBFS() {
+    this.setState({ title: "Breadth First Search" });
+
     // as
     const { grid } = this.state;
     const startNode =
@@ -154,81 +185,138 @@ export default class PathfindingVisualizer extends Component {
   }
 
   render() {
-    const { grid, mouseIsPressed } = this.state;
+    const { grid, mouseIsPressed, title } = this.state;
     // const grid = this.state.grid;
     // console.log(grid);
     return (
-      <>
-        <div className="dropdown">
-          <button
-            className="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="dropdownMenu2"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Algorithms
-          </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button
-              className="dropdown-item"
-              type="button"
-              onClick={() => this.visualizeDijkstra()}
-            >
-              Dijkstra's Algorithm
-            </button>
-            <button className="dropdown-item" type="button">
-              A* Algorithm
-            </button>
-            <button
-              className="dropdown-item"
-              type="button"
-              onClick={() => this.visualizeA()}
-            >
-              Breadth-first Search
-            </button>
-            <button
-              className="dropdown-item"
-              type="button"
-              onClick={() => this.visualizeDFS()}
-            >
-              Depth-first Search
-            </button>
+      <div className="">
+        <nav>
+          <div class="nav-wrapper teal lighten-2">
+            <a class="brand-logo">Path Visualizer</a>
+          </div>
+        </nav>
+        <div className="row">
+          <div className="col-3 card blue  mt-4">
+            <div className=" mt-4">
+              <h4 className="card-header bg-dark text-white">Select</h4>
+
+              <div className="card-content white-text">
+                {/* <div className="dropdown block"> */}
+                {/* <button
+                    className="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenu2"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Algorithms
+                  </button> */}
+                <div className="" aria-labelledby="dropdownMenu2">
+                  <ul className="list-group center-block">
+                    <li className="list-group-item ">
+                      <button
+                        className="my-2 nav-link text-success center-block "
+                        onClick={() => this.visualizeDijkstra()}
+                      >
+                        Dijkstra's Algorithm
+                      </button>
+                    </li>
+                    <li className="list-group-item">
+                      <button className="my-2 nav-link text-success center-block">
+                        A* Algorithm
+                      </button>
+                    </li>
+                    <li className="list-group-item">
+                      <button
+                        className="my-2 nav-link text-success center-block"
+                        onClick={() => this.visualizeBFS()}
+                      >
+                        Breadth-first Search
+                      </button>
+                    </li>
+                    <li className="list-group-item">
+                      <button
+                        className="my-2 nav-link text-success center-block"
+                        onClick={() => this.visualizeDFS()}
+                      >
+                        Depth-first Search
+                      </button>
+                    </li>
+                    <li className="list-group-item">
+                      <button
+                        className="my-2 nav-link text-success center-block"
+                        onClick={
+                          // () => this.rerender()
+                          // () => this.componentDidMount()
+                          this.refreshPage
+
+                          // this.forceUpdateHandler
+                        }
+                      >
+                        Clear
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                {/* </div> */}
+              </div>
+            </div>
+          </div>
+          <div className="col-9">
+            <div className="row">
+              <div className="col s12 m6 mt-4">
+                <div className="card blue-grey darken-1">
+                  <div className="card-content white-text">
+                    <span className="card-title">{title}</span>
+                    <div className="">
+                      {/* {test} */}
+                      {grid.map((row, rowIdx) => {
+                        return (
+                          <div key={rowIdx}>
+                            {row.map((node, nodeIdx) => {
+                              const {
+                                row,
+                                col,
+                                isFinish,
+                                isStart,
+                                isWall,
+                              } = node;
+                              return (
+                                <Node
+                                  key={nodeIdx}
+                                  col={col}
+                                  isFinish={isFinish}
+                                  isStart={isStart}
+                                  isWall={isWall}
+                                  mouseIsPressed={mouseIsPressed}
+                                  onMouseDown={(row, col) =>
+                                    this.handleMouseDown(row, col)
+                                  }
+                                  onMouseEnter={(row, col) =>
+                                    this.handleMouseEnter(row, col)
+                                  }
+                                  onMouseUp={() => this.handleMouseUp()}
+                                  // onMouseLeave={(row, col) => this.handleMouseLeave(row, col)}
+                                  row={row}
+                                ></Node>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <button onClick={() => this.visualizeDijkstra()}>
+
+        {/* <button onClick={() => this.visualizeDijkstra()}>
           Visualize Dijkstra's Algorithm
-        </button>
-        <div className="grid">
-          {grid.map((row, rowIdx) => {
-            return (
-              <div key={rowIdx}>
-                {row.map((node, nodeIdx) => {
-                  const { row, col, isFinish, isStart, isWall } = node;
-                  return (
-                    <Node
-                      key={nodeIdx}
-                      col={col}
-                      isFinish={isFinish}
-                      isStart={isStart}
-                      isWall={isWall}
-                      mouseIsPressed={mouseIsPressed}
-                      onMouseDown={(row, col) => this.handleMouseDown(row, col)}
-                      onMouseEnter={(row, col) =>
-                        this.handleMouseEnter(row, col)
-                      }
-                      onMouseUp={() => this.handleMouseUp()}
-                      // onMouseLeave={(row, col) => this.handleMouseLeave(row, col)}
-                      row={row}
-                    ></Node>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-      </>
+        </button> */}
+      </div>
     );
   }
 }
@@ -236,7 +324,7 @@ const getInitialGrid = (SR, SC, FR, FC) => {
   const grid = [];
   for (let row = 0; row < 20; row++) {
     const currentRow = [];
-    for (let col = 0; col < 50; col++) {
+    for (let col = 0; col < 30; col++) {
       currentRow.push(createNode(col, row, SR, SC, FR, FC));
     }
     grid.push(currentRow);
